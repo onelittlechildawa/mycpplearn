@@ -215,6 +215,8 @@ void runturn(int x){
 }
 int paiti[256];
 int main(){
+    freopen("a.in","r",stdin);
+    freopen("a.ou","w",stdout);
     cin>>N>>M;
     for(int i=0;i<8;i++) paiti[paitc[i]]=i;
     for(int i=1;i<=N;i++){
@@ -227,7 +229,7 @@ int main(){
         else if(s=="FP") pi[i].type=3;
         pi[i].health=4,pi[i].withz=0;
         char c;
-        for(int j=0;j<4;j++) cin>>c,pi[j].card.push_back(paiti[c]);
+        for(int j=0;j<4;j++) cin>>c,pi[i].card.push_back(paiti[c]);
     }
     for(int i=1;i<=N;i++){
         if(pi[i].det) cout<<"DEAD";
