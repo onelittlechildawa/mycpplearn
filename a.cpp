@@ -6,6 +6,7 @@ const char paitc[105]={'P','K','D','F','N','W','J','Z'};
 //           桃  杀  闪  决斗 南蛮万箭无懈连弩
 //           0   1   2   3    4   5   6   7
 int N,M;
+int tu=1,pl=1;
 int shalim=9999;
 struct pig{
     int id,type,health,withz,tiao,det;//1M主,2Z忠,3F反
@@ -143,6 +144,7 @@ void fight(int x,int y){
     }
 }
 void chupai(int x,int y){
+    printf("%d,%c\n",x,paitc[pi[x].card[y]]);
     pi[x].card.erase(pi[x].card.begin()+y);
 }
 bool gopai(int x){
@@ -190,7 +192,7 @@ bool gopai(int x){
                 }
             }
         }
-        if(np==6){
+        if(np==7){
             chupai(x,i);
             pi[x].withz=1;
             shalim=9999;
@@ -202,6 +204,14 @@ void runturn(int x){
     shalim=1;if(pi[x].withz) shalim=9999;
     pi[x].getpai(2);
     while(gopai(x));
+    printf("--------\n%d%d\n",tu,pl);
+    for(int i=1;i<=N;i++){
+        if(pi[i].det) cout<<"DEAD";
+        // else 
+            for(int j:pi[i].card) cout<<paitc[j]<<' ';
+        cout<<'\n';
+    }
+    pl++;
 }
 int paiti[256];
 int main(){
@@ -209,7 +219,7 @@ int main(){
     for(int i=0;i<8;i++) paiti[paitc[i]]=i;
     for(int i=1;i<=N;i++){
         string s;cin>>s;
-        pi[i].id=i;pi[i].det=1;
+        pi[i].id=i;pi[i].det=0;
         for(int j=i;j<=N;j++) pi[i].circl.push_back(j);
         for(int j=1;j<=i-1;j++) pi[i].circl.push_back(j);
         if(s=="MP") pi[i].type=1;
@@ -217,13 +227,20 @@ int main(){
         else if(s=="FP") pi[i].type=3;
         pi[i].health=4,pi[i].withz=0;
         char c;
-        for(int i=0;i<4;i++) cin>>c,pi[i].card.push_back(paiti[c]);
+        for(int j=0;j<4;j++) cin>>c,pi[j].card.push_back(paiti[c]);
+    }
+    for(int i=1;i<=N;i++){
+        if(pi[i].det) cout<<"DEAD";
+        else 
+            for(int j:pi[i].card) cout<<paitc[j]<<' ';
+        cout<<'\n';
     }
     for(int i=1;i<=M;i++) {char c;cin>>c;paidui[i]=paiti[c];}
     for(int i=1;i<=N;i++){
         runturn(i);
         if(checkwin()) break;
         if(i==N) i=0;
+        tu++;
     }
     if(checkwin()==2) cout<<"FP\n";
     else cout<<"MP";
