@@ -46,13 +46,23 @@ void initlca(int x){
 }
 int lca(int x,int y){
     if(dep[x]<dep[y]) swap(x,y);
-    for(int d=dep[x]-dep[y],i=0;d;d>>=1,i++) 
-        if(d&1) x=fa[x][i];
+    int t=x;
+    // for(int d)
+    for(int d=dep[t]-dep[y],i=0;d;d>>=1,i++) if(d&1) t=fa[t][i]; 
+    cout<<t<<' '<<x<<endl;
     if(x==y) return x;
-    for(int i=20;i>=0;i--)
-        if(fa[x][i]!=fa[y][i]) x=fa[x][i],y=fa[y][i];
+    for(int i=20;i>=0;i--) if(fa[x][i]!=fa[y][i]) x=fa[x][i],y=fa[y][i];
     return fa[x][0];
 }
+// int lca(int x,int y){
+//     if(dep[x]<dep[y]) swap(x,y);
+//     for(int d=dep[x]-dep[y],i=0;d;d>>=1,i++) 
+//         if(d&1) x=fa[x][i];
+//     if(x==y) return x;
+//     for(int i=20;i>=0;i--)
+//         if(fa[x][i]!=fa[y][i]) x=fa[x][i],y=fa[y][i];
+//     return fa[x][0];
+// }
 void cacl(int x){
     for(int i:v[x]){
         if(i==fa[x][0]) continue;
@@ -73,6 +83,7 @@ int main(){
     }
     initlca(1);
     for(int i=1;i<=n;i++) cin>>w[i];
+    dep[1]=1;
     for(int i=0;i<m;i++){
         int a,b;cin>>a>>b;
         int t=lca(a,b);
